@@ -125,34 +125,13 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
                 당신의 비주얼 아우라 진단
               </h2>
               
-              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-                <button 
-                  onClick={saveReportAsImage}
-                  className="flex items-center gap-2 px-6 py-2.5 border border-wood/20 rounded-full text-[10px] sm:text-[11px] uppercase tracking-widest hover:bg-wood hover:text-cream transition-all duration-300"
-                >
-                  <Download size={14} />
-                  Save Report as Image
-                </button>
-
-                <div className="flex items-center gap-2 p-1 bg-wood/5 rounded-full border border-wood/10">
-                  <button
-                    onClick={() => setSortBy("recommended")}
-                    className={`px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest transition-all ${
-                      sortBy === "recommended" ? "bg-wood text-cream" : "text-wood/40 hover:text-wood"
-                    }`}
-                  >
-                    추천순
-                  </button>
-                  <button
-                    onClick={() => setSortBy("price")}
-                    className={`px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest transition-all ${
-                      sortBy === "price" ? "bg-wood text-cream" : "text-wood/40 hover:text-wood"
-                    }`}
-                  >
-                    가격순
-                  </button>
-                </div>
-              </div>
+              <button 
+                onClick={saveReportAsImage}
+                className="flex items-center gap-2 px-6 py-2.5 border border-wood/20 rounded-full text-[10px] sm:text-[11px] uppercase tracking-widest hover:bg-wood hover:text-cream transition-all duration-300"
+              >
+                <Download size={14} />
+                Save Report as Image
+              </button>
             </div>
 
             <div ref={reportRef} className="p-4 md:p-8 rounded-lg">
@@ -181,10 +160,38 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
                   </div>
                 </div>
 
-                <ProductCarousel 
-                  products={recommendations} 
-                  onProductClick={onProductClick} 
-                />
+                <div className="mt-32 pt-24 border-t border-wood/10">
+                  <div className="flex flex-col items-center mb-16 gap-8">
+                    <div className="flex items-center gap-2 p-1 bg-wood/5 rounded-full border border-wood/10">
+                      <button
+                        onClick={() => setSortBy("recommended")}
+                        className={`px-6 py-2 rounded-full text-[10px] font-medium uppercase tracking-widest transition-all ${
+                          sortBy === "recommended" ? "bg-wood text-cream shadow-md" : "text-wood/40 hover:text-wood"
+                        }`}
+                      >
+                        추천순
+                      </button>
+                      <button
+                        onClick={() => setSortBy("price")}
+                        className={`px-6 py-2 rounded-full text-[10px] font-medium uppercase tracking-widest transition-all ${
+                          sortBy === "price" ? "bg-wood text-cream shadow-md" : "text-wood/40 hover:text-wood"
+                        }`}
+                      >
+                        가격순
+                      </button>
+                    </div>
+
+                    <div className="text-center">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-wood/30 mb-2">Matching Selection</p>
+                      <h3 className="text-2xl font-light tracking-tight text-wood">당신의 스타일을 닮은 향기</h3>
+                    </div>
+                  </div>
+
+                  <ProductCarousel 
+                    products={recommendations} 
+                    onProductClick={onProductClick} 
+                  />
+                </div>
               </div>
             </div>
           </>
