@@ -11,9 +11,9 @@ import PhilosophySection from "@/sections/PhilosophySection";
 import ScentGuideSection from "@/sections/ScentGuideSection";
 import AIInterviewSection from "@/sections/AIInterviewSection";
 import InsightReportSection from "@/sections/InsightReportSection";
-import CuratedSelectionSection from "@/sections/CuratedSelectionSection";
 import SafetyValuesSection from "@/sections/SafetyValuesSection";
 import FooterSection from "@/sections/FooterSection";
+import FloatingNavButton from "@/components/common/FloatingNavButton";
 
 import type { AnalysisResults } from "@/types";
 
@@ -50,15 +50,15 @@ export default function App() {
         {/* 분석 리포트 섹션: 인터뷰 결과에 따른 개인화된 분석 결과 */}
         <InsightReportSection results={analysisResults} />
         
-        {/* 큐레이션 섹션: 추천 제품 리스트 */}
-        <CuratedSelectionSection results={analysisResults} />
-        
         {/* 안전성 섹션: 제품의 원료 및 안전성 강조 */}
         <SafetyValuesSection />
       </main>
       
       {/* 하단 푸터 영역 */}
       <FooterSection />
+
+      {/* 플로팅 내비게이션 버튼 (클릭: 이전 섹션 / 더블클릭: 맨 위로) */}
+      <FloatingNavButton />
     </div>
   );
 }

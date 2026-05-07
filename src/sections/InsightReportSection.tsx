@@ -7,10 +7,12 @@
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import RadarChart from "@/components/common/RadarChart";
 import LayeringRecipe from "@/components/report/LayeringRecipe";
-import { radarData } from "@/data/reportData";
+import SimilarAuras from "@/components/report/SimilarAuras";
+import { radarData, auras } from "@/data/reportData";
+import { getRecommendedProducts, getLayeringRecommendation } from "@/data/recommendationEngine";
 import { Download } from "lucide-react";
 import html2canvas from "html2canvas";
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import type { AnalysisResults } from "@/types";
 
 export default function InsightReportSection({ results }: { results: AnalysisResults | null }) {
@@ -20,19 +22,23 @@ export default function InsightReportSection({ results }: { results: AnalysisRes
   const { ref: ref4, isVisible: vis4 } = useIntersectionObserver();
   const reportRef = useRef<HTMLDivElement>(null);
 
+  // 다이내믹 데이터 계산
+  const layeringData = useMemo(() => getLayeringRecommendation(results), [results]);
+  const recommendedProducts = useMemo(() => getRecommendedProducts(results), [results]);
+
   // 사용자의 선택에 따른 가변적인 로직 생성
   const dynamicLogicSteps = results?.type === "personal" ? [
     `${results.fashionStyle} 스타일 → 그에 어울리는 현대적 텍스처 치환`,
     `${results.personalMood} → 해당 분위기를 극대화하는 향기 노트 배합`,
-    "지적인 아우라 → 드라이한 시더우드와 아이리스의 논리적 결합",
-    "도시의 금속 질감 → 차가운 오조닉 노트와 스파이시한 블랙 페퍼 레이어링",
+    `추천 베이스: ${layeringData?.main.name} (${layeringData?.main.family})`,
+    "도시의 금속 질감과 자연의 조화로운 레이어링 완성",
   ] : [];
 
   const dynamicSpaceLogicSteps = results?.type === "space" ? [
-    `${results.spaceColor} 공간 → 해당 색감을 시각화하는 화이트 머스크 배합`,
-    `${results.spaceTexture} 소재 → 공간의 무게감을 잡아주는 우디 노트`,
-    `${results.spaceLight} 분위기 → 빛의 온기를 닮은 싱그러운 네롤리와 베르가못`,
-    "미니멀한 가구 배치 → 여백의 미를 완성하는 투명한 오조닉 노트",
+    `${results.spaceColor} 공간 → 해당 색감을 시각화하는 향기 입자 배합`,
+    `${results.spaceTexture} 소재 → 소재의 물성을 보완하는 노트 구성`,
+    `${results.spaceLight} 분위기 → 빛의 밀도를 닮은 잔향의 농도 조절`,
+    `최적의 향: ${recommendedProducts[0]?.name || "시그니처 나그참파"}`,
   ] : [];
 
   // 인터뷰 결과에 따른 레이더 차트 데이터 동적 계산
@@ -228,7 +234,9 @@ export default function InsightReportSection({ results }: { results: AnalysisRes
                     </div>
                   </div>
 
-                  <LayeringRecipe fashionStyle={results.fashionStyle || "Minimal"} />
+                  <LayeringRecipe fashionStyle={results.fashionStyle || "Minimal"} data={layeringData} />
+                  
+                  <SimilarAuras auras={auras} />
                 </div>
               )}
 
@@ -272,13 +280,15 @@ export default function InsightReportSection({ results }: { results: AnalysisRes
                           {results.spaceLight} <span className="hidden sm:inline"><br/></span>
                           {results.spaceColor} {results.spaceTexture} 스튜디오
                         </h4>
-                        <p className="text-[14px] leading-relaxed text-cream/70 mb-8 break-keep">
+                        <div className="text-[14px] leading-relaxed text-cream/70 mb-8 break-keep">
                           당신의 공간에서 느껴지는 {results.spaceColor}과 {results.spaceTexture}의 질감, 그리고 {results.spaceLight}은 
                           심리적인 안정감과 지적인 평온함을 동시에 제공합니다. <br/><br/>
-                          이 공간의 공기를 정화하고 깊은 명상의 분위기를 완성하기 위해, 
-                          전통적인 수제 기법으로 빚어낸 **나그참파 인센스 스틱**을 제안합니다. 
-                          피어오르는 연기와 함께 당신의 공간은 더욱 신성하고 아늑한 안식처가 될 것입니다.
-                        </p>
+                          이 공간의 공기를 정화하고 분위기를 완성하기 위해, 
+                          **{recommendedProducts[0]?.name}** (이)가 포함된 인센스 라인을 제안합니다. 
+                          {recommendedProducts[1] && (
+                            <>추가적으로 **{recommendedProducts[1].name}**을(를) 함께 사용하면 더욱 입체적인 공간감을 연출할 수 있습니다.</>
+                          )}
+                        </div>
                         <div className="pt-6 border-t border-cream/10">
                           <p className="text-[10px] uppercase tracking-widest text-cream/40 mb-2 text-cream">Recommended Category</p>
                           <p className="text-sm font-medium text-cream">Nag Champa Incense Stick</p>

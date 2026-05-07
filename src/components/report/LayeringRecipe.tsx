@@ -5,13 +5,23 @@
  */
 
 import { Plus, Equal } from "lucide-react";
+import type { Product } from "@/data/productData";
 
 interface LayeringRecipeProps {
   /** 사용자가 선택한 패션 스타일 키워드 (설명 문구에 포함됨) */
   fashionStyle: string;
+  /** 레이어링 데이터 */
+  data?: {
+    main: Product;
+    accent: Product;
+    outcome: string;
+    description: string;
+  } | null;
 }
 
-export default function LayeringRecipe({ fashionStyle }: LayeringRecipeProps) {
+export default function LayeringRecipe({ fashionStyle, data }: LayeringRecipeProps) {
+  if (!data) return null;
+
   return (
     <div className="mt-24 pt-24 border-t border-wood/10">
       <div className="text-center mb-16">
@@ -23,23 +33,23 @@ export default function LayeringRecipe({ fashionStyle }: LayeringRecipeProps) {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-12">
           <div className="flex flex-row items-center justify-center gap-6 sm:gap-12 lg:flex-1">
             {/* 메인 향수 (Base) */}
-            <div className="text-center">
+            <div className="text-center group">
               <div className="aspect-[3/4] w-24 sm:w-32 md:w-40 mx-auto bg-cream mb-4 sm:mb-6 overflow-hidden">
-                <img src="https://github.com/user-attachments/assets/5d4c5ef1-a7ee-443d-810b-09c1aa90977e" alt="Main Scent" className="w-full h-full object-cover mix-blend-multiply opacity-80" />
+                <img src={data.main.image} alt={data.main.name} className="w-full h-full object-contain mix-blend-multiply opacity-90 transition-transform duration-500 group-hover:scale-105" />
               </div>
-              <p className="text-[9px] uppercase tracking-widest text-wood/40 mb-1">Main</p>
-              <h4 className="text-sm sm:text-base md:text-lg font-medium line-clamp-1">Ambre Noir</h4>
+              <p className="text-[9px] uppercase tracking-widest text-wood/40 mb-1">{data.main.brand}</p>
+              <h4 className="text-sm sm:text-base md:text-lg font-medium line-clamp-1">{data.main.name}</h4>
             </div>
 
             <Plus className="text-wood/20 flex-shrink-0" size={20} strokeWidth={1} />
 
             {/* 레이어링 액센트 (Accent) */}
-            <div className="text-center">
+            <div className="text-center group">
               <div className="aspect-[3/4] w-24 sm:w-32 md:w-40 mx-auto bg-cream mb-4 sm:mb-6 overflow-hidden">
-                <img src="https://github.com/user-attachments/assets/1512af21-6ab3-4700-93c8-188682843654" alt="Accent Scent" className="w-full h-full object-cover mix-blend-multiply opacity-80" />
+                <img src={data.accent.image} alt={data.accent.name} className="w-full h-full object-contain mix-blend-multiply opacity-90 transition-transform duration-500 group-hover:scale-105" />
               </div>
-              <p className="text-[9px] uppercase tracking-widest text-wood/40 mb-1">Accent</p>
-              <h4 className="text-sm sm:text-base md:text-lg font-medium line-clamp-1">Verde Breeze</h4>
+              <p className="text-[9px] uppercase tracking-widest text-wood/40 mb-1">{data.accent.brand}</p>
+              <h4 className="text-sm sm:text-base md:text-lg font-medium line-clamp-1">{data.accent.name}</h4>
             </div>
           </div>
 
@@ -53,11 +63,11 @@ export default function LayeringRecipe({ fashionStyle }: LayeringRecipeProps) {
             <div className="inline-block px-3 py-1 bg-wood text-cream text-[9px] uppercase tracking-widest mb-4">
               New Aura Result
             </div>
-            <h4 className="text-2xl sm:text-3xl font-light mb-6 tracking-tighter">새벽의 이슬 맺힌 숲</h4>
+            <h4 className="text-2xl sm:text-3xl font-light mb-6 tracking-tighter">{data.outcome}</h4>
             <p className="text-[14px] sm:text-[15px] leading-relaxed text-wood/70 break-keep">
-              {fashionStyle} 스타일의 시크함 위에 Verde의 싱그러운 시트러스를 덧입혀보세요.
-              우디 베이스가 중심을 잡아주며, 첫 향의 시트러스가 
-              당신의 분위기에 생동감과 신비로운 여운을 더해줄 것입니다.
+              {data.description}
+              <br/><br/>
+              {fashionStyle} 스타일의 시각적 완성도 위에, {data.main.name}의 깊이와 {data.accent.name}의 위트를 더해 당신만의 독보적인 잔향을 남겨보세요.
             </p>
           </div>
         </div>

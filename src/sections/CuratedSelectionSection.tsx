@@ -4,11 +4,12 @@
  * 필터링 기능(전체, 맞춤, 비건, 에코)과 제품 호버 효과를 포함합니다.
  */
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import ProductCard from "@/components/curated/ProductCard";
 import ProductModal from "@/components/curated/ProductModal";
 import { products } from "@/data/productData";
+import { getRecommendedProducts } from "@/data/recommendationEngine";
 import type { Product } from "@/data/productData";
 import type { AnalysisResults } from "@/types";
 
@@ -21,6 +22,12 @@ export default function CuratedSelectionSection({ results }: { results: Analysis
   const [activeFilter, setActiveFilter] = useState<Filter>("All");
   const [activeBrand, setActiveBrand] = useState<string>("All");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  // 분석 결과에 따른 추천 상품 목록 (ID 리스트 추출)
+  const recommendedIds = useMemo(() => 
+    getRecommendedProducts(results).map(p => p.id), 
+    [results]
+  );
 
   // Deriving state from props during render phase (React best practice for sync state with props)
   const [prevResults, setPrevResults] = useState<AnalysisResults | null>(results);
@@ -45,7 +52,11 @@ export default function CuratedSelectionSection({ results }: { results: Analysis
   const categoryFiltered = products.filter((p) => p.category === activeCategory);
   
   const filtered = categoryFiltered.filter((p) => {
-    const matchFilter = activeFilter === "All" || p.tags.includes(activeFilter);
+    // 'For You' 필터일 경우 분석 엔진에서 계산된 ID 목록에 포함되는지 확인
+    const matchFilter = activeFilter === "For You" 
+      ? recommendedIds.includes(p.id)
+      : (activeFilter === "All" || p.tags.includes(activeFilter));
+      
     const matchBrand = activeBrand === "All" || p.brand === activeBrand;
     return matchFilter && matchBrand;
   });
