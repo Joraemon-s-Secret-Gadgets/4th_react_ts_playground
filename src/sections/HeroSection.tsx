@@ -71,7 +71,7 @@ export default function HeroSection() {
                 </p>
                 <p className="text-[13px] sm:text-sm font-medium leading-snug text-cream break-keep">
                   취향에 맞는 3가지 원료를 선택해 <br className="hidden sm:inline" /> 
-                  당신만의 시그니처 향을 발견하세요
+                  당신의 향을 발견하세요
                 </p>
               </div>
               {/* 시작하기 링크 버튼 */}

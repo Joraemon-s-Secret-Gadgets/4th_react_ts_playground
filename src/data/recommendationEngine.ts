@@ -61,32 +61,3 @@ export function getRecommendedProducts(results: AnalysisResults | null): (Produc
     .sort((a, b) => b.similarity - a.similarity)
     .slice(0, 5);
 }
-
-/**
- * 레이어링 추천을 위해 메인 향수와 서브 향수를 결정합니다.
- */
-export function getLayeringRecommendation(results: AnalysisResults | null): { main: Product; accent: Product; outcome: string; description: string } | null {
-  if (!results || results.type !== "personal") return null;
-
-  const recommended = getRecommendedProducts(results);
-  if (recommended.length < 2) {
-    const main = recommended[0] || personalProducts[0];
-    const accent = personalProducts[1];
-    return {
-      main,
-      accent,
-      outcome: "새벽의 숲과 시트러스",
-      description: "우디한 베이스가 중심을 잡아주며 시트러스의 생동감이 더해집니다."
-    };
-  }
-
-  const main = recommended[0];
-  const accent = recommended[1];
-
-  return {
-    main,
-    accent,
-    outcome: "당신만을 위한 시그니처 레이어링",
-    description: "이미지에서 추출된 분위기와 선택하신 노트가 완벽한 조화를 이룹니다."
-  };
-}
