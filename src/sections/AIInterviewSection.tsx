@@ -3,9 +3,9 @@
  * @description 사용자의 취향을 분석하기 위한 AI 채팅 인터뷰 섹션입니다.
  */
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
-import { Sparkles, Camera, Loader2, CheckCircle2 } from "lucide-react";
+import { Sparkles, Loader2, CheckCircle2 } from "lucide-react";
 import ImageUploader from "@/components/common/ImageUploader";
 import type { AnalysisResults } from "@/types";
 

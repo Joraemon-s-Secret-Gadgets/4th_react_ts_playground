@@ -3,7 +3,7 @@
  * @description 이미지를 업로드하고 리사이징하여 Base64로 변환하는 컴포넌트입니다.
  */
 
-import { useState, useRef, ChangeEvent, DragEvent } from "react";
+import { useState, useRef, type ChangeEvent, type DragEvent } from "react";
 import { Upload, X, ImageIcon, Loader2 } from "lucide-react";
 
 interface ImageUploaderProps {
