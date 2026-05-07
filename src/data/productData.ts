@@ -1,9 +1,8 @@
 /**
  * @file productData.ts
- * @description 사이트에서 판매 및 추천하는 향수와 홈 프래그넌스 제품들의 데이터베이스입니다.
+ * @description 사이트에서 판매 및 추천하는 향수 제품들의 데이터베이스입니다.
  */
 
-import { nagChampaProducts } from './nagChampaData';
 import { personalProducts } from '../../crawler/personalData';
 
 export interface Product {
@@ -29,6 +28,5 @@ export interface Product {
 }
 
 export const products: Product[] = [
-  ...personalProducts,
-  ...nagChampaProducts
+  ...personalProducts
 ];
