@@ -89,7 +89,7 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
     try {
       const canvas = await html2canvas(reportRef.current, {
         backgroundColor: "#FDFCF0",
-        scale: 1.5, // 품질과 용량 사이의 균형을 위해 1.5배율로 조정
+        scale: 2, // 선명도를 위해 다시 2배로 조정 (스타일은 코드로 제어)
         useCORS: true,
         logging: false,
         allowTaint: true,
@@ -98,36 +98,67 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
         onclone: (clonedDoc) => {
           const el = clonedDoc.getElementById("report-content");
           if (el) {
-            // 캡처 전용 스타일 강제 적용
-            el.style.width = "800px"; // 캡처 시 너비 고정 (레이아웃 틀어짐 방지)
+            // 1. 고정 레이아웃 강제
+            el.style.width = "800px";
+            el.style.maxWidth = "800px";
+            el.style.minWidth = "800px";
+            el.style.padding = "60px";
+            el.style.boxSizing = "border-box";
             el.style.filter = "none";
             el.style.transform = "none";
-            el.style.visibility = "visible";
-            el.style.opacity = "1";
-            el.style.padding = "40px";
+
+            // 모든 하위 요소에 box-sizing 적용
+            const allElements = el.querySelectorAll("*");
+            allElements.forEach((node) => {
+              (node as HTMLElement).style.boxSizing = "border-box";
+            });
             
-            // 모든 텍스트 요소의 간격 조정
-            const texts = el.querySelectorAll("p, h2, h3, span");
+            // 2. 텍스트 및 폰트 최적화 (px 단위 고정)
+            const texts = el.querySelectorAll("p, h2, h3, span, div");
             texts.forEach((node) => {
               const target = node as HTMLElement;
-              target.style.lineHeight = "1.3"; // 고정 줄 간격
-              target.style.letterSpacing = "-0.02em"; // 미세하게 좁은 자간
+              target.style.lineHeight = "1.4"; // 간격 압축
+              target.style.letterSpacing = "-0.02em";
               target.style.wordBreak = "keep-all";
+              target.style.whiteSpace = "normal";
+              
+              // 폰트 크기 강제 고정 (반응형 방지)
+              const className = target.className;
+              if (className.includes("text-3xl") || className.includes("text-4xl") || className.includes("text-5xl")) {
+                target.style.fontSize = "32px";
+              } else if (className.includes("text-xl") || className.includes("text-2xl")) {
+                target.style.fontSize = "20px";
+              } else if (className.includes("text-[15px]") || className.includes("text-base")) {
+                target.style.fontSize = "15px";
+              } else if (className.includes("text-[10px]") || className.includes("text-[11px]") || className.includes("text-[9px]")) {
+                target.style.fontSize = "11px";
+              }
             });
 
-            // 섹션 간 간격 축소 (20% 정도 줄임)
-            const sections = el.querySelectorAll(".mb-32, .mt-32, .mb-12, .mb-16");
-            sections.forEach((node) => {
+            // 3. 섹션 간격 압축 (현재의 70% 수준으로 조정)
+            const spacingElements = el.querySelectorAll(".mb-32, .mt-32, .mb-20, .mb-12, .mb-16, .gap-16, .gap-24");
+            spacingElements.forEach((node) => {
               const target = node as HTMLElement;
-              if (target.classList.contains("mb-32")) target.style.marginBottom = "80px";
-              if (target.classList.contains("mt-32")) target.style.marginTop = "80px";
-              if (target.classList.contains("mb-12")) target.style.marginBottom = "30px";
-              if (target.classList.contains("mb-16")) target.style.marginBottom = "40px";
+              if (target.classList.contains("mb-32")) target.style.marginBottom = "60px";
+              if (target.classList.contains("mt-32")) target.style.marginTop = "60px";
+              if (target.classList.contains("mb-20")) target.style.marginBottom = "40px";
+              if (target.classList.contains("mb-12")) target.style.marginBottom = "24px";
+              if (target.classList.contains("mb-16")) target.style.marginBottom = "30px";
+              if (target.classList.contains("gap-16") || target.classList.contains("gap-24")) {
+                target.style.gap = "30px";
+              }
+            });
+
+            // 4. Flexbox 정렬 보정 (이미지/차트 영역 고정)
+            const flexItems = el.querySelectorAll(".grid > div, .flex > div");
+            flexItems.forEach((node) => {
+              const target = node as HTMLElement;
+              target.style.flexShrink = "0";
             });
           }
         }
       });
-      const image = canvas.toDataURL("image/png", 0.9); // 용량 최적화 추가
+      const image = canvas.toDataURL("image/png", 1.0);
       const link = document.createElement("a");
       link.href = image;
       link.download = `Olfit_Report.png`;
