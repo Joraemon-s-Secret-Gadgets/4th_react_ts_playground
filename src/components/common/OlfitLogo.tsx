@@ -4,8 +4,6 @@
  * 벡터 포맷을 사용하여 어떠한 해상도에서도 선명하게 렌더링됩니다.
  */
 
-import React from 'react';
-
 interface OlfitLogoProps {
   className?: string;
   width?: number | string;

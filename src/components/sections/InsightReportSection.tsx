@@ -7,7 +7,6 @@
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import RadarChart from "@/components/common/RadarChart";
 import ProductCarousel from "@/components/report/ProductCarousel";
-import OlfitLogo from "@/components/common/OlfitLogo";
 import { radarData } from "@/data/reportData";
 import { getRecommendedProducts } from "@/services/recommendationEngine";
 import { Download } from "lucide-react";
@@ -127,15 +126,15 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
             el.style.boxSizing = "border-box";
             el.style.filter = "none";
             el.style.transform = "none";
-            el.style.webkitFontSmoothing = "antialiased";
-            el.style.mozOsxFontSmoothing = "grayscale";
+            (el.style as any).webkitFontSmoothing = "antialiased";
+            (el.style as any).mozOsxFontSmoothing = "grayscale";
 
             // 모든 하위 요소에 box-sizing 및 텍스트 힌트 적용
             const allElements = el.querySelectorAll("*");
             allElements.forEach((node) => {
               const target = node as HTMLElement;
               target.style.boxSizing = "border-box";
-              target.style.webkitFontSmoothing = "antialiased";
+              (target.style as any).webkitFontSmoothing = "antialiased";
             });
             
             // 2. 텍스트 및 폰트 최적화 (px 단위 고정 및 선명도 강화)
