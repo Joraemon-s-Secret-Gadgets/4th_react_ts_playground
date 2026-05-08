@@ -154,9 +154,6 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
               width: 100%;
               height: 100%;
               background-color: ${theme.bg};
-              background-image: url('${theme.image}');
-              background-size: cover;
-              background-position: center;
               color: ${theme.color};
               display: flex;
               flex-direction: column;
@@ -167,14 +164,28 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
               border-radius: 2px;
             `;
 
+            // 실제 img 태그를 배경으로 삽입 (html2canvas 캡처 안정성 향상)
+            const bgImg = clonedDoc.createElement("img");
+            bgImg.src = window.location.origin + theme.image;
+            bgImg.style.cssText = `
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              z-index: 0;
+            `;
+            placeholder.appendChild(bgImg);
+
             // 이미지 위에 가독성을 위한 오버레이 레이어 추가
             const overlay = clonedDoc.createElement("div");
             overlay.style.cssText = `
               position: absolute;
               top: 0; left: 0; right: 0; bottom: 0;
               background: ${theme.bg};
-              opacity: 0.85;
-              z-index: 0;
+              opacity: 0.8;
+              z-index: 1;
             `;
             placeholder.appendChild(overlay);
 
@@ -185,7 +196,7 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
               top: 0; left: 0; right: 0; bottom: 0;
               background-image: repeating-linear-gradient(45deg, ${theme.color} 0, ${theme.color} 1px, transparent 1px, transparent 8px);
               opacity: 0.05;
-              z-index: 1;
+              z-index: 2;
             `;
             placeholder.appendChild(pattern);
 
@@ -194,16 +205,17 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
             badge.textContent = family;
             badge.style.cssText = `
               font-size: 11px;
+              font-weight: 600;
               letter-spacing: 0.15em;
               border: 1px solid ${theme.color};
               border-radius: 999px;
-              padding: 4px 10px;
-              opacity: 0.6;
+              padding: 5px 14px;
+              background-color: rgba(255, 255, 255, 0.2);
               position: relative;
-              z-index: 2;
+              z-index: 3;
               text-transform: uppercase;
               margin-top: auto;
-              margin-bottom: 20px;
+              margin-bottom: 24px;
             `;
             placeholder.appendChild(badge);
 
