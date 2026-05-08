@@ -127,10 +127,10 @@ export default function ScentNoteCarousel({ onNotesChange }: ScentNoteCarouselPr
           <svg className="absolute inset-0 w-full h-full pointer-events-none drop-shadow-sm" viewBox="0 0 100 100">
             {/* 전체 피라미드 베이스 (배경색 제거) */}
             
-            {/* 외곽선 및 수평 분할선 (최소한의 가이드만 유지) */}
+            {/* 외곽선 및 수평 분할선 (정교한 좌표 교정으로 벗어남 방지) */}
             <path d="M50 5 L95 90 L5 90 Z" fill="none" stroke="currentColor" strokeWidth="0.2" className="text-wood/20" />
-            <line x1="33" y1="33" x2="67" y2="33" stroke="currentColor" strokeWidth="0.15" className="text-wood/10" />
-            <line x1="16" y1="62" x2="84" y2="62" stroke="currentColor" strokeWidth="0.15" className="text-wood/10" />
+            <line x1="35.2" y1="33" x2="64.8" y2="33" stroke="currentColor" strokeWidth="0.15" className="text-wood/10" />
+            <line x1="19.8" y1="62" x2="80.2" y2="62" stroke="currentColor" strokeWidth="0.15" className="text-wood/10" />
           </svg>
 
           {/* 슬롯 레이어들 (하이라이트 없이 텍스트만 표시) */}
