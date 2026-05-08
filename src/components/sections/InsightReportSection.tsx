@@ -9,7 +9,7 @@ import RadarChart from "@/components/common/RadarChart";
 import ProductCarousel from "@/components/report/ProductCarousel";
 import { radarData } from "@/data/reportData";
 import { getRecommendedProducts } from "@/services/recommendationEngine";
-import { Download } from "lucide-react";
+import { Download, Share2, Check } from "lucide-react";
 import html2canvas from "html2canvas";
 import { useRef, useMemo, useState } from "react";
 import type { AnalysisResults } from "@/types";
@@ -29,6 +29,7 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
   // 정렬 상태 추가
   const [sortBy, setSortBy] = useState<"recommended" | "price">("recommended");
   const [isSaving, setIsSaving] = useState(false);
+  const [isShared, setIsShared] = useState(false);
 
   // 다이내믹 데이터 계산
   const baseRecommendations = useMemo(() => getRecommendedProducts(results), [results]);
@@ -214,6 +215,13 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
     }
   };
 
+  // 결과 공유 함수
+  const shareResults = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setIsShared(true);
+    setTimeout(() => setIsShared(false), 2000);
+  };
+
   const renderText = (text: string) => {
     return text.split("<br/>").map((line, i) => (
       <span key={i}>
@@ -243,25 +251,46 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
                 당신의 비주얼 아우라 진단
               </h2>
               
-              <button 
-                onClick={saveReportAsImage}
-                disabled={isSaving}
-                className={`flex items-center gap-2 px-6 py-2.5 border border-wood/20 rounded-full text-[10px] sm:text-[11px] uppercase tracking-widest transition-all duration-300 ${
-                  isSaving ? "bg-wood/10 text-wood/40 cursor-not-allowed" : "hover:bg-wood hover:text-cream"
-                }`}
-              >
-                {isSaving ? (
-                  <>
-                    <div className="w-3 h-3 border-2 border-wood/20 border-t-wood rounded-full animate-spin" />
-                    고화질 리포트를 정밀하게 생성 중입니다. 잠시만 기다려 주세요 (약 3~5초 소요)
-                  </>
-                ) : (
-                  <>
-                    <Download size={14} />
-                    Save Report as Image
-                  </>
-                )}
-              </button>
+              <div className="flex flex-wrap justify-center gap-4">
+                <button 
+                  onClick={saveReportAsImage}
+                  disabled={isSaving}
+                  className={`flex items-center gap-2 px-6 py-2.5 border border-wood/20 rounded-full text-[10px] sm:text-[11px] uppercase tracking-widest transition-all duration-300 ${
+                    isSaving ? "bg-wood/10 text-wood/40 cursor-not-allowed" : "hover:bg-wood hover:text-cream"
+                  }`}
+                >
+                  {isSaving ? (
+                    <>
+                      <div className="w-3 h-3 border-2 border-wood/20 border-t-wood rounded-full animate-spin" />
+                      고화질 리포트를 정밀하게 생성 중입니다. 잠시만 기다려 주세요 (약 3~5초 소요)
+                    </>
+                  ) : (
+                    <>
+                      <Download size={14} />
+                      Save Report as Image
+                    </>
+                  )}
+                </button>
+
+                <button 
+                  onClick={shareResults}
+                  className={`flex items-center gap-2 px-6 py-2.5 border border-wood/20 rounded-full text-[10px] sm:text-[11px] uppercase tracking-widest transition-all duration-300 ${
+                    isShared ? "bg-green-50 text-green-600 border-green-200" : "hover:bg-wood hover:text-cream text-wood"
+                  }`}
+                >
+                  {isShared ? (
+                    <>
+                      <Check size={14} />
+                      Link Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Share2 size={14} />
+                      Share Results
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
 
             <div ref={reportRef} id="report-content" className="p-4 md:p-8 rounded-lg bg-[#FDFCF0]">

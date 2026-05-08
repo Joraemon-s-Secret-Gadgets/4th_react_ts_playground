@@ -113,7 +113,8 @@ export default function RadarChart({ data, forceDraw }: RadarChartProps) {
               y={p.y}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="text-[12px] md:text-[11px] fill-wood/50 font-medium uppercase tracking-wider"
+              className="text-[12px] md:text-[11px] fill-wood/60 font-medium uppercase tracking-[0.15em]"
+              style={{ fontFamily: "'Playfair Display', serif" }}
             >
               {d.axis}
             </text>
