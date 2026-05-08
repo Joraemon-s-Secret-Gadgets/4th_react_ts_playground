@@ -172,33 +172,52 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
     });
   };
 
-  // 결과 공유 함수 (이미지 캡처 및 공유/복사)
+  // 결과 공유 함수 (이미지 캡처 및 공유/다운로드 하이브리드)
   const shareResults = async () => {
     if (isSaving) return;
     setIsSaving(true);
 
     try {
+      // 1. 고화질 이미지 추출 (2초 이상의 시간이 걸림)
       const blob = await captureReportBlob();
       if (!blob) throw new Error("이미지 생성 실패");
 
-      // 1. 네이티브 공유 API 시도 (모바일 등)
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], "report.png", { type: "image/png" })] })) {
-        const file = new File([blob], `Olfit_Analysis_${Date.now()}.png`, { type: "image/png" });
-        await navigator.share({
-          files: [file],
-          title: "Olfit Scent Analysis Report",
-          text: "나만의 고유한 향기 아우라 분석 결과를 확인해보세요.",
-        });
-      } 
-      // 2. 클립보드 이미지 복사 시도 (데스크탑 등)
-      else if (navigator.clipboard && window.ClipboardItem) {
-        const item = new ClipboardItem({ "image/png": blob });
-        await navigator.clipboard.write([item]);
-        setIsShared(true);
-        setTimeout(() => setIsShared(false), 2000);
-      } 
-      // 3. 둘 다 실패 시 파일 직접 다운로드로 유도
-      else {
+      const file = new File([blob], `Olfit_Analysis_${Date.now()}.png`, { type: "image/png" });
+
+      // 2. 모바일 등 네이티브 공유 API 지원 환경 시도
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: "Olfit Scent Analysis Report",
+            text: "나만의 고유한 향기 아우라 분석 결과를 확인해보세요.",
+          });
+          return; // 공유 성공 시 여기서 함수 깔끔하게 종료
+        } catch (shareErr) {
+          // 사용자가 공유 창을 그냥 닫은 경우(AbortError)는 무시하고 종료
+          if ((shareErr as Error).name === "AbortError") return; 
+          console.warn("공유하기 실패, 클립보드 복사로 넘어갑니다.", shareErr);
+        }
+      }
+
+      // 3. 데스크탑 등에서 클립보드 이미지 복사 시도
+      let clipboardSuccess = false;
+      try {
+        if (navigator.clipboard && window.ClipboardItem) {
+          const item = new ClipboardItem({ "image/png": blob });
+          await navigator.clipboard.write([item]);
+          clipboardSuccess = true;
+          setIsShared(true); // "이미지 복사 완료!" 표시
+          setTimeout(() => setIsShared(false), 2000);
+          return; // 복사 성공 시 함수 종료
+        }
+      } catch (clipboardErr) {
+        // 보안 정책으로 인해 클립보드 복사 실패 시 (예: 비동기 작업 지연)
+        console.warn("보안 정책으로 클립보드 복사 실패. 다운로드로 안전하게 우회합니다.", clipboardErr);
+      }
+
+      // 4. 최후의 보루: 공유도 실패, 복사도 실패했다면 -> 즉시 파일 직접 다운로드!
+      if (!clipboardSuccess) {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
@@ -207,17 +226,17 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
         link.click();
         document.body.removeChild(link);
         setTimeout(() => window.URL.revokeObjectURL(url), 100);
-      }
-    } catch (err) {
-      console.error("공유 실패:", err);
-      // 공유 취소 등을 제외한 실제 오류 시 링크 복사로 대체
-      if ((err as Error).name !== "AbortError") {
-        navigator.clipboard.writeText(window.location.href);
-        setIsShared(true);
+        
+        // 다운로드가 실행되어도 유저에게 긍정적인 피드백(체크마크)을 보여줌
+        setIsShared(true); 
         setTimeout(() => setIsShared(false), 2000);
       }
+
+    } catch (err) {
+      console.error("이미지 처리 중 치명적 오류:", err);
+      alert("결과를 처리하는 중 문제가 발생했습니다.");
     } finally {
-      setIsSaving(false);
+      setIsSaving(false); // 로딩 스피너 종료
     }
   };
 
