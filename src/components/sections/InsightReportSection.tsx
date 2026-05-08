@@ -20,6 +20,32 @@ interface InsightReportSectionProps {
   onProductClick: (product: Product) => void;
 }
 
+/**
+ * html2canvas 캡처 시 CORS 이슈를 방지하기 위해 
+ * 엘리먼트 내의 모든 이미지를 Base64 DataURL로 변환합니다.
+ */
+async function convertImagesToBase64(el: HTMLElement) {
+  const images = el.querySelectorAll("img");
+  for (const img of Array.from(images)) {
+    if (img.src.startsWith("data:")) continue;
+    try {
+      const response = await fetch(img.src);
+      const blob = await response.blob();
+      await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          img.src = reader.result as string;
+          resolve(null);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (e) {
+      console.warn("Failed to convert image to base64:", img.src, e);
+    }
+  }
+}
+
 export default function InsightReportSection({ results, onProductClick }: InsightReportSectionProps) {
   const { ref: ref1, isVisible: vis1 } = useIntersectionObserver();
   const { ref: ref2, isVisible: vis2 } = useIntersectionObserver();
@@ -111,15 +137,18 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
       const canvas = await html2canvas(reportElement, {
         backgroundColor: "#FDFCF0",
         scale: 2, // 1.5에서 2로 상향하여 선명도 복구
-        useCORS: true, // 외부 이미지를 위해 필요
-        allowTaint: true, // CORS 정책이 엄격할 경우 캔버스 오염을 허용해서라도 이미지를 그림
+        useCORS: false, // Base64 변환 후에는 필요 없음
+        allowTaint: false, // Base64 변환 후에는 필요 없음
         logging: false,
         imageTimeout: 15000,
         scrollX: 0,
         scrollY: -window.scrollY,
-        onclone: (clonedDoc) => {
+        onclone: async (clonedDoc) => {
           const el = clonedDoc.getElementById("report-content");
           if (!el) return;
+          
+          // 이미지를 Base64로 변환하여 CORS 방지
+          await convertImagesToBase64(el);
           
           el.style.width = "1000px";
           el.style.maxWidth = "1000px";
