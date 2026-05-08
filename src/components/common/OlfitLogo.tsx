@@ -30,15 +30,15 @@ export default function OlfitLogo({
     >
       <text
         x="50%"
-        y="55%"
+        y="50%"
         dominantBaseline="middle"
         textAnchor="middle"
         fill={color}
         style={{ 
-          fontFamily: "serif", 
+          fontFamily: "'Playfair Display', serif", 
           fontWeight: 300, 
-          fontSize: "24px", 
-          letterSpacing: "0.25em",
+          fontSize: "26px", 
+          letterSpacing: "0.28em",
           textTransform: "uppercase"
         }}
       >
@@ -46,7 +46,7 @@ export default function OlfitLogo({
       </text>
       {/* 단순 텍스트를 넘어선 로고 느낌을 위한 데코레이션 라인 */}
       <path 
-        d="M20 32 H100" 
+        d="M25 32 H95" 
         stroke={color} 
         strokeWidth="0.5" 
         strokeOpacity="0.3" 
