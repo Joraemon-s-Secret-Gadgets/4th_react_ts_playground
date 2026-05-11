@@ -122,31 +122,31 @@ export default function ProductCarousel({ products, onProductClick, slots }: Pro
                         <span className="text-[9px] leading-none font-bold text-wood group-hover:text-cream tracking-[0.15em] uppercase [text-indent:0.15em]">Best Pick</span>
                       </div>
                     )}
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-wood/40 group-hover:text-cream/40 mb-2 transition-colors">{item.brand}</p>
-                    <h4 className="text-2xl sm:text-3xl font-light text-wood group-hover:text-cream mb-6 break-keep transition-colors leading-tight pr-16">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-wood/70 group-hover:text-cream/70 group-hover:font-semibold mb-2 transition-all">{item.brand}</p>
+                    <h4 className="text-2xl sm:text-3xl font-light text-wood group-hover:text-cream group-hover:font-medium mb-6 break-keep transition-all leading-tight pr-16">
                       {item.name}
                     </h4>
                     
                     {/* 요약 상세 정보 */}
                     <div className="space-y-4 mb-8">
                       <div>
-                        <span className="text-[10px] uppercase tracking-widest text-wood/30 group-hover:text-cream/30 block mb-1 transition-colors">Notes</span>
-                        <p className="text-sm text-wood/70 group-hover:text-cream/70 line-clamp-2 break-keep text-balance transition-colors">
+                        <span className="text-[10px] uppercase tracking-widest text-wood/60 group-hover:text-cream/60 group-hover:font-semibold block mb-1 transition-all">Notes</span>
+                        <p className="text-sm text-wood group-hover:text-cream group-hover:font-semibold line-clamp-2 break-keep text-balance transition-all">
                           {item.notes}
                         </p>
                       </div>
                       <div className="flex flex-wrap gap-x-8 gap-y-4">
                         <div>
-                          <span className="text-[10px] uppercase tracking-widest text-wood/30 group-hover:text-cream/30 block mb-1 transition-colors">Family</span>
-                          <p className="text-sm font-medium text-wood group-hover:text-cream transition-colors">{item.family}</p>
+                          <span className="text-[10px] uppercase tracking-widest text-wood/60 group-hover:text-cream/60 group-hover:font-semibold block mb-1 transition-all">Family</span>
+                          <p className="text-sm font-medium text-wood group-hover:text-cream group-hover:font-bold transition-all">{item.family}</p>
                         </div>
                         <div>
-                          <span className="text-[10px] uppercase tracking-widest text-wood/30 group-hover:text-cream/30 block mb-1 transition-colors">Size</span>
-                          <p className="text-sm font-medium text-wood group-hover:text-cream transition-colors">{item.size}</p>
+                          <span className="text-[10px] uppercase tracking-widest text-wood/60 group-hover:text-cream/60 group-hover:font-semibold block mb-1 transition-all">Size</span>
+                          <p className="text-sm font-medium text-wood group-hover:text-cream group-hover:font-bold transition-all">{item.size}</p>
                         </div>
                         <div>
-                          <span className="text-[10px] uppercase tracking-widest text-wood/30 group-hover:text-cream/30 block mb-1 transition-colors">Price</span>
-                          <p className="text-sm font-medium text-wood group-hover:text-cream transition-colors">{item.price}</p>
+                          <span className="text-[10px] uppercase tracking-widest text-wood/60 group-hover:text-cream/60 group-hover:font-semibold block mb-1 transition-all">Price</span>
+                          <p className="text-sm font-medium text-wood group-hover:text-cream group-hover:font-bold transition-all">{item.price}</p>
                         </div>
                       </div>
                     </div>
@@ -158,7 +158,7 @@ export default function ProductCarousel({ products, onProductClick, slots }: Pro
                       </p>
                     </div>
 
-                    <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-wood group-hover:text-cream pt-6 border-t border-wood/10 group-hover:border-cream/20 transition-all">
+                    <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-wood group-hover:text-cream group-hover:font-bold pt-6 border-t border-wood/10 group-hover:border-cream/20 transition-all">
                       <span>Explore Details</span>
                       <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
                     </div>

@@ -21,7 +21,7 @@ export default function RecommendationList({
   sortBy, 
   onSortChange 
 }: RecommendationListProps) {
-  const sortButtonClass = "h-8 min-w-[72px] px-5 inline-flex items-center justify-center rounded-full text-[10px] leading-none font-medium uppercase tracking-widest [text-indent:0.15em] transition-all";
+  const sortButtonClass = "h-8 min-w-[72px] px-5 inline-flex items-center justify-center rounded-full text-[10px] leading-none font-medium uppercase tracking-widest [text-indent:0.15em] transition-all hover:font-bold";
   const sortLabelClass = "inline-block leading-none translate-y-px";
 
   return (
@@ -32,7 +32,7 @@ export default function RecommendationList({
             type="button"
             onClick={() => onSortChange("recommended")}
             className={`${sortButtonClass} ${
-              sortBy === "recommended" ? "bg-wood text-cream shadow-md" : "text-wood/40 hover:text-wood"
+              sortBy === "recommended" ? "bg-wood text-cream shadow-md" : "text-wood"
             }`}
             data-capture-pill="sort"
           >
@@ -42,7 +42,7 @@ export default function RecommendationList({
             type="button"
             onClick={() => onSortChange("price")}
             className={`${sortButtonClass} ${
-              sortBy === "price" ? "bg-wood text-cream shadow-md" : "text-wood/40 hover:text-wood"
+              sortBy === "price" ? "bg-wood text-cream shadow-md" : "text-wood"
             }`}
             data-capture-pill="sort"
           >
@@ -56,7 +56,7 @@ export default function RecommendationList({
           
           {recommendations.length > 0 && (
             <div className="mt-6 max-w-lg mx-auto px-6 py-4 bg-wood/[0.03] border border-wood/10 rounded-sm">
-              <p className="text-[13px] text-wood/70 leading-relaxed italic break-keep text-balance">
+              <p className="text-[13px] text-wood leading-relaxed italic break-keep text-balance">
                 "{recommendations[0].matchReason}"
               </p>
             </div>
