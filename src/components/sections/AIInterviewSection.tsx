@@ -64,7 +64,7 @@ export default function AIInterviewSection({ onComplete, selectedNotes = [] }: A
               analysisMetadata: {
                 base64Image: base64,
                 selectedNotes: selectedNotes,
-                radarScores: { "플로랄": 0.2, "우디": 0.8, "오리엔탈": 0.4, "프레시": 0.6, "구르망": 0.1 }
+                radarScores: { "플로랄": 0.2, "우디": 0.8, "앰버": 0.4, "프레시": 0.6, "구르망": 0.1 }
               }
             });
             console.log("Analysis triggered with remote URL:", remoteUrl);

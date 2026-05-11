@@ -77,7 +77,7 @@ export default function InsightReportSection({ results, onProductClick }: Insigh
     return [
       { axis: "플로랄", value: scores?.["플로랄"] ?? 0.2 },
       { axis: "우디", value: scores?.["우디"] ?? 0.5 },
-      { axis: "오리엔탈", value: scores?.["오리엔탈"] ?? 0.3 },
+      { axis: "앰버", value: scores?.["앰버"] ?? 0.3 },
       { axis: "프레시", value: scores?.["프레시"] ?? 0.4 },
       { axis: "구르망", value: scores?.["구르망"] ?? 0.2 },
     ].map(d => ({

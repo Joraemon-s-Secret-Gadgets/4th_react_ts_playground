@@ -350,7 +350,7 @@ export const personalProducts: Product[] = [
       topNotes: ["라다넘"],
       heartNotes: ["시벳", "카스토럼"],
       baseNotes: ["바닐라", "레진"],
-      bestFor: "강렬하고 수수께끼 같은 오리엔탈 분위기를 원하는 분"
+      bestFor: "강렬하고 수수께끼 같은 앰버 분위기를 원하는 분"
     }
   },
   {

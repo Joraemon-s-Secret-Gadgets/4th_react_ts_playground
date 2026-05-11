@@ -38,10 +38,13 @@ export default function FamilyCarousel({ families }: FamilyCarouselProps) {
   return (
     <div className="flex flex-col h-full">
       {/* 상단 컨트롤 영역: 타이틀 (인디케이터는 하단으로 이동) */}
-      <div className="flex justify-between items-center mb-8 md:mb-10">
-        <h3 className="text-[11px] md:text-[12px] font-bold uppercase tracking-[0.2em] text-wood/30">
+      <div className="flex flex-col mb-8 md:mb-10">
+        <h3 className="text-[11px] md:text-[12px] font-bold uppercase tracking-[0.2em] text-wood/30 mb-4">
           02. Scent Family (계열의 차이)
         </h3>
+        <p className="text-[14px] md:text-[15px] text-wood/60 leading-relaxed break-keep">
+          향기 계열은 향수의 성격과 분위기를 결정하는 가장 큰 기준입니다. 비슷한 성질을 가진 향료들을 그룹화하여, 당신이 선호하는 향의 지도를 그리는 첫걸음이 됩니다.
+        </p>
       </div>
 
       {/* 메인 슬라이드 영역 */}

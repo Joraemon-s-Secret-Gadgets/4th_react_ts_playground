@@ -7,6 +7,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Check, RefreshCw, Info } from 'lucide-react';
 import { scentNotes } from "@/data/noteData";
+import { noteHierarchy } from "@/data/scentData";
 import ScentPyramid from "@/components/common/ScentPyramid";
 import type { ScentNote } from "@/data/noteData";
 
@@ -31,6 +32,7 @@ export default function ScentNoteCarousel({ onNotesChange }: ScentNoteCarouselPr
   const currentNotes = scentNotes.filter(n => n.category === activeTab);
   const totalNotes = currentNotes.length;
   const currentNote = currentNotes[currentIndex];
+  const activeNoteInfo = noteHierarchy.find(h => h.title.startsWith(activeTab));
 
   const handleNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % totalNotes);
@@ -107,6 +109,17 @@ export default function ScentNoteCarousel({ onNotesChange }: ScentNoteCarouselPr
                 onTabChange={handleTabChange}
                 className="w-72 h-72 md:w-80 md:h-80"
               />
+            </div>
+
+            {/* 활성화된 탭(노트 레이어) 설명 */}
+            <div className="mb-10 p-5 bg-white/50 rounded-sm border border-wood/5 animate-in fade-in duration-700">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-[10px] font-bold text-wood uppercase tracking-widest">{activeNoteInfo?.title}</span>
+                <span className="text-[9px] text-wood/40">— {activeNoteInfo?.subtitle}</span>
+              </div>
+              <p className="text-[13px] text-wood/70 leading-relaxed break-keep font-light">
+                {activeNoteInfo?.description}
+              </p>
             </div>
 
             <p className="text-[13px] md:text-[14px] text-wood/60 leading-relaxed break-keep mb-8 font-light text-center lg:text-left">
