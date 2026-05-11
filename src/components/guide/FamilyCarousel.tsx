@@ -11,6 +11,7 @@ interface Family {
   title: string;
   subtitle: string;
   description: string;
+  keyNotes?: string[];
   icon: LucideIcon;
   color: string;
   details: { name: string; desc: string }[];
@@ -73,9 +74,21 @@ export default function FamilyCarousel({ families }: FamilyCarouselProps) {
               </div>
 
               {/* 본문 설명 */}
-              <p className="text-[13.5px] sm:text-[16px] leading-[1.7] md:leading-[1.8] text-wood mb-8 md:mb-12 font-light break-keep tracking-tight text-left">
+              <p className="text-[13.5px] sm:text-[16px] leading-[1.7] md:leading-[1.8] text-wood mb-6 md:mb-8 font-light break-keep tracking-tight text-left">
                 {f.description}
-              </p>              
+              </p>
+
+              {/* 대표 노트 태그 리스트 */}
+              {f.keyNotes && (
+                <div className="flex flex-wrap gap-2 mb-8 md:mb-12">
+                  {f.keyNotes.map((note) => (
+                    <span key={note} className="px-3 py-1 bg-wood/5 rounded-full text-[11px] md:text-[12px] font-medium text-wood/60 border border-wood/10">
+                      #{note}
+                    </span>
+                  ))}
+                </div>
+              )}
+
               {/* 하단 성분 상세 목록 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-10 pt-6 md:pt-10 border-t border-wood/10 mt-auto">
                 {f.details.map((d) => (
